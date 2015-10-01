@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+if [[ -z "$1" ]]; then
+    echo "usage: $0 <rootgit directory>"
+    exit 1
+fi
+
+cd $1
+if [[ $? != "0" ]]; then
+    echo "rootgit dir $1 inaccessible"
+    exit 1
+fi
+
+rgdir=$(pwd)
+
+rootgit_scripts=$(find -executable -name '*.rootgit')
+
+for s in $rootgit_scripts; do
+    cd "$(dirname $s)"
+    "$rgdir/$s"
+    cd "$rgdir"
+done
+

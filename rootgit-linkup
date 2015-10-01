@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+if [[ $# -lt 2 ]]; then
+    echo "usage: $0 <rootgit dir> <root dir>"
+    exit 1
+fi
+
+# ideally I should compute relative rather than absolute symlinks...
+# but for the moment this will only be used in real roots, so it won't matter
+
+origdir=$(pwd)
+relroot=$2
+relrootgit=$1
+
+cd "$relroot"
+if [[ $? -ne 0 ]]; then
+    echo "root doesn't exist"
+    exit 1
+fi
+absroot=$(pwd)
+
+cd "$origdir"
+
+cd "$relrootgit"
+if [[ $? -ne 0 ]]; then
+    echo "rootgit doesn't exist"
+    exit 1
+fi
+absrootgit=$(pwd)
+# make sure the backup dir for overwritten files exists
+mkdir -p overwrites.rootgit
+
+cd "$absrootgit"
+rgfiles=$(find -type f ! -name '*.rootgit')
+
+# link in the files!
+cd "$absroot"
+for f in $rgfiles; do
+    mkdir -p $(dirname "$f")
+    if [[ -f "$f" ]]; then
+        # since -f tells me "true" for symlinks...
+        if [[ ! -L "$f" ]]; then
+            echo "preserving old file in $absrootgit/overwrites.rootgit/$f"
+            mkdir -p "$absrootgit/overwrites.rootgit/$(dirname $f)"
+            mv "$f" "$absrootgit/overwrites.rootgit/$f"
+        fi
+    fi
+    cd "$(dirname $f)"
+    ln -s --force "$absrootgit/$f" . 
+    cd "$absroot"
+done
+
