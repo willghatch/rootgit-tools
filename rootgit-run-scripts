@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# run all executables in the rootgit named *.rootgit
+
 if [[ -z "$1" ]]; then
     echo "usage: $0 <rootgit directory>"
     exit 1
