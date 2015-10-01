@@ -46,7 +46,7 @@ rgfiles=$(find -type f '!' -path '*.rootgit*' '!' -path '*/.git/*')
 cd "$absroot"
 for f in $rgfiles; do
     dnf=$(dirname "$f")
-    mkdir -p $dnf
+    mkdir -p "$dnf"
     if [[ -f "$f" ]]; then
         # since -f tells me "true" for symlinks...
         if [[ ! -L "$f" ]]; then
