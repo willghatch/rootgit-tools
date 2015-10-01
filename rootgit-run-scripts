@@ -15,7 +15,7 @@ fi
 
 rgdir=$(pwd)
 
-rootgit_scripts=$(find -executable -name '*.rootgit')
+rootgit_scripts=$(find -type f -executable -name '*.rootgit')
 
 for s in $rootgit_scripts; do
     cd "$(dirname $s)"
