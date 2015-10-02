@@ -26,8 +26,6 @@ if [[ $? -ne 0 ]]; then
     exit 1
 fi
 absrootgit=$(pwd)
-# make sure the backup dir for overwritten files exists
-mkdir -p overwrites.rootgit
 
 getDotPath(){
     # construct a ../ path to undo a relative path
