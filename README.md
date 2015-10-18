@@ -45,6 +45,16 @@ different purposes.
 
 If you find it useful or want to improve it, have at it!
 
+Todo
+----
+
+- Configurable name transformers.  For example, a lot of files need to start
+  with a dot in the real file hierarchy, but I want them not to be hidden
+  in the rootgit.  So I want to be able to say "DOT" or something will be
+  translated to "." in the real tree.
+- This and perhaps other per-rootgit configuration.  It should go in
+  `$ROOTGIT/conf.rootgit`.
+
 License
 -------
 
