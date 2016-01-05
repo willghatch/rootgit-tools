@@ -46,6 +46,17 @@ So if you have a directory at `/rootgit/etc/foo.linkdir` (and your rootgit is
 at /rootgit), then you will have a symlink at `/etc/foo` that points to the
 directory.
 
+A Note About Systemd
+--------------------
+
+Some versions of systemd apparently doesn't play nice with unit files that are
+symlinks, and will purposely fail.  By this I mean that if you run `systemctl
+<enable/start/etc> foo.service` and `/etc/systemd/system/foo.service` is a
+symlink to something else (say, in a rootgit), it will fail.  A workaround is
+to either use `systemctl <enable/start/etc> <absolute-path-to-unit-file>` or by
+setting the environment variable `SYSTEMD_UNIT_PATH` to include the path to the
+actual directory your unit file lives in.
+
 Why
 ---
 
