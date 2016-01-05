@@ -35,6 +35,17 @@ so you can `chown`/`chmod` directly without absolute paths.
 I've made the scripts work using relative links, and needing a path
 to the root so it can also work for chroot environments.
 
+Link Directories
+----------------
+
+Sometimes you want to link a directory instead of a file - for instance if you
+want any files automatically added to that directory to go in your rootgit (and
+give you untracked file messages, etc).  To do this, append `.rg-linkdir` to
+the file name.  This extra extension will be stripped from the symlink name.
+So if you have a directory at `/rootgit/etc/foo.linkdir` (and your rootgit is
+at /rootgit), then you will have a symlink at `/etc/foo` that points to the
+directory.
+
 Why
 ---
 

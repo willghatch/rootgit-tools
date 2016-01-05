@@ -38,23 +38,31 @@ getDotPath(){
 }
 
 cd "$absrootgit"
-rgfiles=$(find '(' -type f -o -type l ')' '!' -path '*.rootgit*' '!' -path '*/.git/*')
+rgfiles=$(find '(' -type f -o -type l ')' '!' -path '*.rootgit*' '!' -path '*/.git/*' '!' -path '*.rg-linkdir/*')
+rgdirs=$(find -type d -name '*.rg-linkdir')
 
 # link in the files!
 cd "$absroot"
-for f in $rgfiles; do
+for f in $rgfiles $rgdirs; do
     dnf=$(dirname "$f")
+    rename=$(basename "$f")
+    rename=${rename/.rg-linkdir/}
+    rf="$dnf/$rename"
+
     mkdir -p "$dnf"
-    if [[ -f "$f" ]]; then
+    if [[ -f "$rf" || -d "$rf" ]]; then
         # since -f tells me "true" for symlinks...
-        if [[ ! -L "$f" ]]; then
-            echo "preserving old file in $absrootgit/overwrites.rootgit/$f"
+        if [[ ! -L "$rf" ]]; then
+            echo "preserving old file in $absrootgit/overwrites.rootgit/$rf"
             mkdir -p "$absrootgit/overwrites.rootgit/$dnf"
-            mv "$f" "$absrootgit/overwrites.rootgit/$f"
+            mv "$rf" "$absrootgit/overwrites.rootgit/$rf"
+        else
+            # remove the symlink, since we will just replace it
+            rm "$rf"
         fi
     fi
     cd "$dnf"
-    ln -s --force "$(getDotPath "$dnf")${relrootgit}/$f" .
+    ln -s --force "$(getDotPath "$dnf")${relrootgit}/$f" ./"$rename"
     cd "$absroot"
 done
 
