@@ -46,6 +46,13 @@ So if you have a directory at `/rootgit/etc/foo.linkdir` (and your rootgit is
 at /rootgit), then you will have a symlink at `/etc/foo` that points to the
 directory.
 
+Copy, Not Link
+--------------
+
+If you really want the file to be copied rather than symlinked, you can append
+`.rg-copy` to the file name in the rootgit.  This may be useful for programs
+that can't read symlinked files due to being chrooted or something.
+
 A Note About Systemd
 --------------------
 

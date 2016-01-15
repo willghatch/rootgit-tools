@@ -47,6 +47,7 @@ for f in $rgfiles $rgdirs; do
     dnf=$(dirname "$f")
     rename=$(basename "$f")
     rename=${rename/.rg-linkdir/}
+    rename=${rename/.rg-copy/}
     rf="$dnf/$rename"
 
     mkdir -p "$dnf"
@@ -62,7 +63,11 @@ for f in $rgfiles $rgdirs; do
         fi
     fi
     cd "$dnf"
-    ln -s --force "$(getDotPath "$dnf")${relrootgit}/$f" ./"$rename"
+    if [[ "$f" =~ ^.*\.rg-copy$ ]]; then
+        cp "$absrootgit/$f" "$rename"
+    else
+        ln -s --force "$(getDotPath "$dnf")${relrootgit}/$f" ./"$rename"
+    fi
     cd "$absroot"
 done
 
