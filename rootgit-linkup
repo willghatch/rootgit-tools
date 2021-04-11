@@ -38,7 +38,7 @@ getDotPath(){
 }
 
 cd "$absrootgit"
-rgfiles=$(find '(' -type f -o -type l ')' '!' -path '*.rootgit*' '!' -path '*/.git/*' '!' -path '*.rg-linkdir/*')
+rgfiles=$(find '(' -type f -o -type l ')' '!' -path '*.rootgit*' '!' -path '*/.git/*' '!' -path '.gitmodules' '!' -path '*.rg-linkdir/*')
 rgdirs=$(find -type d -name '*.rg-linkdir')
 
 # link in the files!
