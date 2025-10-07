@@ -66,7 +66,12 @@ for f in $rgfiles $rgdirs; do
     if [[ "$f" =~ ^.*\.rg-copy$ ]]; then
         cp "$absrootgit/$f" "$rename"
     else
-        ln -s --force "$(getDotPath "$dnf")${relrootgit}/$f" ./"$rename"
+        if [[ "${relrootgit:0:1}" == "/" ]]; then
+            # the "relative" path is actually absolute.  Don't use leading dots.
+            ln -s --force "${relrootgit}/$f" ./"$rename"
+        else
+            ln -s --force "$(getDotPath "$dnf")${relrootgit}/$f" ./"$rename"
+        fi
     fi
     cd "$absroot"
 done
